@@ -1,0 +1,17 @@
+{
+  "addons": {
+    "send-to-kindle@fil2k": {
+      "updates": [
+        {
+          "version": "0.1.0",
+          "update_link": "https://github.com/Filipe-Cavalheiro/zotero-send-to-kindle/releases/download/v0.1.0/send-to-kindle-0.1.0.xpi",
+          "applications": {
+            "zotero": {
+              "strict_min_version": "8.0"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

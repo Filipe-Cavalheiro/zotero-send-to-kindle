@@ -1,0 +1,27 @@
+<vbox id="sendtokindle-prefs" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" xmlns:html="http://www.w3.org/1999/xhtml">
+  <groupbox>
+    <label><html:h2>Kindle</html:h2></label>
+    <html:label for="sendtokindle-mac">MAC address (used to find the Kindle's IP on the LAN)</html:label>
+    <html:input type="text" id="sendtokindle-mac" preference="extensions.sendtokindle.mac"/>
+    <html:label for="sendtokindle-host">Fixed IP / hostname (optional, overrides MAC lookup)</html:label>
+    <html:input type="text" id="sendtokindle-host" preference="extensions.sendtokindle.host"/>
+  </groupbox>
+  <groupbox>
+    <label><html:h2>SSH (KOReader SSH server)</html:h2></label>
+    <html:label for="sendtokindle-port">Port</html:label>
+    <html:input type="number" id="sendtokindle-port" preference="extensions.sendtokindle.port"/>
+    <html:label for="sendtokindle-user">User</html:label>
+    <html:input type="text" id="sendtokindle-user" preference="extensions.sendtokindle.user"/>
+    <html:label for="sendtokindle-identity">Private key file (optional, default: ~/.ssh keys)</html:label>
+    <html:input type="text" id="sendtokindle-identity" preference="extensions.sendtokindle.identityFile"/>
+  </groupbox>
+  <groupbox>
+    <label><html:h2>Destination</html:h2></label>
+    <html:label for="sendtokindle-base">Base folder on Kindle (collection path is appended)</html:label>
+    <html:input type="text" id="sendtokindle-base" preference="extensions.sendtokindle.basePath"/>
+  </groupbox>
+  <hbox align="center">
+    <button id="sendtokindle-test" label="Test connection"/>
+    <label id="sendtokindle-test-result"/>
+  </hbox>
+</vbox>

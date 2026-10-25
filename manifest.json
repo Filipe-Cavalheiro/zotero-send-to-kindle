@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Send to Kindle (KOReader)",
+  "version": "0.1.0",
+  "description": "Send selected PDFs to a jailbroken Kindle running KOReader over SSH, mirroring the Zotero collection structure.",
+  "homepage_url": "https://github.com/Filipe-Cavalheiro/zotero-send-to-kindle",
+  "author": "fil2k",
+  "icons": {
+    "48": "content/icons/kindle.svg",
+    "96": "content/icons/kindle.svg"
+  },
+  "applications": {
+    "zotero": {
+      "id": "send-to-kindle@fil2k",
+      "update_url": "https://raw.githubusercontent.com/Filipe-Cavalheiro/zotero-send-to-kindle/main/update.json",
+      "strict_min_version": "8.0",
+      "strict_max_version": "10.*"
+    }
+  }
+}
