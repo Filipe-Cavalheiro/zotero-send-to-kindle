@@ -51,6 +51,12 @@ In Zotero: **Tools → Plugins → ⚙ → Install Plugin From File…** and pic
 - Base folder (default `/mnt/us/documents/Papers`)
 - **Test connection** button
 
+## Disclaimer
+
+This plugin was written entirely by Claude (Anthropic's Claude Opus 5.5) via
+Claude Code. It has only been tested on a Kindle (10th generation, white)
+running KOReader. Other models may work but are untested.
+
 ## License
 
 MIT

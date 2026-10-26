@@ -131,20 +131,26 @@ SendToKindle = {
   // --- Host discovery ---
 
   async run(command, args) {
-    let proc = await Subprocess.call({ command, arguments: args, stderr: "stdout" });
-    let output = "";
-    let chunk;
-    while ((chunk = await proc.stdout.readString())) {
-      output += chunk;
-    }
+    // Keep stderr separate: ssh prints warnings there (e.g. OpenSSH 10's
+    // post-quantum key exchange notice) that must not pollute command output
+    let proc = await Subprocess.call({ command, arguments: args, stderr: "pipe" });
+    let readAll = async (pipe) => {
+      let text = "";
+      let chunk;
+      while ((chunk = await pipe.readString())) {
+        text += chunk;
+      }
+      return text;
+    };
+    let [stdout, stderr] = await Promise.all([readAll(proc.stdout), readAll(proc.stderr)]);
     let { exitCode } = await proc.wait();
-    return { exitCode, output };
+    return { exitCode, stdout, stderr };
   },
 
   async readARPTable() {
     let cat = await Subprocess.pathSearch("cat");
-    let { output } = await this.run(cat, ["/proc/net/arp"]);
-    return output.split("\n").slice(1)
+    let { stdout } = await this.run(cat, ["/proc/net/arp"]);
+    return stdout.split("\n").slice(1)
       .map(line => line.trim().split(/\s+/))
       .filter(cols => cols.length >= 4 && cols[2] !== "0x0")
       .map(cols => ({ ip: cols[0], mac: cols[3].toLowerCase() }));
@@ -219,15 +225,29 @@ SendToKindle = {
     return opts;
   },
 
+  /**
+   * Error output of a failed ssh/scp call, without OpenSSH's "** WARNING"
+   * banner lines, which would otherwise hide the actual error.
+   */
+  errorText(result) {
+    this.log(`stderr: ${result.stderr}`);
+    let text = (result.stderr || result.stdout)
+      .split("\n")
+      .filter(line => !line.startsWith("** "))
+      .join("\n")
+      .trim();
+    return text || "no error output";
+  },
+
   async ssh(host, remoteCommand) {
     let ssh = await Subprocess.pathSearch("ssh");
     let args = ["-p", String(this.getPref("port")), ...this.sshOptions(),
       `${this.getPref("user")}@${host}`, remoteCommand];
     let result = await this.run(ssh, args);
     if (result.exitCode !== 0) {
-      throw new Error(`ssh failed (${result.exitCode}): ${result.output.trim()}`);
+      throw new Error(`ssh failed (${result.exitCode}): ${this.errorText(result)}`);
     }
-    return result.output;
+    return result.stdout;
   },
 
   async scp(host, localPath, remotePath) {
@@ -237,7 +257,7 @@ SendToKindle = {
       localPath, `${this.getPref("user")}@${host}:${this.shellQuote(remotePath)}`];
     let result = await this.run(scp, args);
     if (result.exitCode !== 0) {
-      throw new Error(`scp failed (${result.exitCode}): ${result.output.trim()}`);
+      throw new Error(`scp failed (${result.exitCode}): ${this.errorText(result)}`);
     }
   },
 
