@@ -60,4 +60,3 @@ running KOReader. Other models may work but are untested.
 ## License
 
 MIT
-# zotero-send-to-kindle
