@@ -54,7 +54,7 @@ In Zotero: **Tools → Plugins → ⚙ → Install Plugin From File…** and pic
 ## Disclaimer
 
 This plugin was written entirely by Claude (Anthropic's Claude Opus 5.5) via
-Claude Code. It has only been tested on a Kindle (10th generation, white)
+Claude Code. It has only been tested on a Kindle Paperwhite (10th generation)
 running KOReader. Other models may work but are untested.
 
 ## License
